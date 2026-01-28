@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8"/>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <title>Verify Email</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='verify.css') }}" />
+</head>
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  
+  <div class="otp-box">
+    <h2>Verify</h2>
+    <h6>Enter your 6 digit OTP code</h6>
+    <form method="POST">
+      <div class="otp-inputs">
+        <input name="otp1" type="text" maxlength="1" inputmode="numeric" required />
+        <input name="otp2" type="text" maxlength="1" inputmode="numeric" required />
+        <input name="otp3" type="text" maxlength="1" inputmode="numeric" required />
+        <input name="otp4" type="text" maxlength="1" inputmode="numeric" required />
+        <input name="otp5" type="text" maxlength="1" inputmode="numeric" required />
+        <input name="otp6" type="text" maxlength="1" inputmode="numeric" required />
+      </div>
+
+      <input type="hidden" id="otpFinal" name="otp">
+
+      <button class="verify-btn" type="submit">Verify</button>
+    </form>
+    <div class="resend-container">
+      <h6>Didn't get the code?</h6>
+      <span class="resend" id="resendBox">Resend in <span id="countdown">30</span>sec</span>
+    </div>
+  </div>
+
+  <script src="{{url_for('static', filename='verify.js')}}"></script>
+  
+</body>
+</html>
+
+

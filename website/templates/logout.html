@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/">
+  <link rel="stylesheet" href="{{ url_for('static', filename='logout.css') }}">
+  <title>Log Out</title>
+</head>
+<body>
+  
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="container">
+    <form action="/logout" method="POST">
+      <h1>Log Out</h1>
+      <h6>Are you sure you want to log out?</h6>
+      <div class="btn-container">
+        <button class="btn-logout" name="action" value="logout" type="submit">Log Out</button>
+        <button class="btn-cancel" name="action" value="stayin" type="submit">No, Stay Signed In</button>
+      </div>
+    </form>
+  </div>
+  <script src="{{ url_for('static', filename='logout.js') }}"></script>
+</body>
+</html>

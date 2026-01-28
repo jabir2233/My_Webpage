@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: #c9d6ff;
+  background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.container h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.container h6 {
+  font-size: 1rem;
+  color: #666;
+}
+
+.container {
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  padding: 20px;
+  max-width: 80%;
+  width: 400px;
+  text-align: center;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.btn-container button {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  background-color: #512da8; /* Initial color */
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.btn-container button:hover {
+  background-color: #6a39d7; /* Color on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+.btn-container button:active {
+  background-color: #3e0e8a; /* Color on click */
+  transform: scale(1.1); /* Slightly increase size on click */
+}
+
+.btn-container .btn-cancel {
+  background-color: #666;
+}
+
+.btn-container .btn-cancel:hover {
+  background-color: #888; /* Color on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+.btn-container .btn-cancel:active {
+  background-color: #444; /* Color on click */
+  transform: scale(1.1); /* Slightly increase size on click */
+}
+
+.flash-messages {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 10px 0;
+  background-color: rgba(255, 255, 255, 0.9); /* Optional: background for better visibility */
+}
+
+.alert {
+  width: 80%;
+  max-width: 800px;
+  padding: 15px;
+  margin: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alert .btn-close {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+  background: none;
+  border: none;
+}
+
+.alert .btn-close:hover {
+  opacity: 1;
+}
+
+.alert.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}

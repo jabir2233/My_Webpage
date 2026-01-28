@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jabir Hossain | Portfolio</title>
+
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{url_for('static', filename='home.css')}}">
+</head>
+<body>
+
+<!-- Flash Message -->
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">Jabir2233</div>
+  
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+
+    {% if current_user.is_authenticated %}
+    <!--Log out button-->
+      <li><a href="{{url_for('auth.logout')}}" class="logout-button" style="color: var(--snd-color);
+    border-radius: 20px;
+    font-size: 18px;
+    border: 2px solid var(--text-color);
+    padding: 4px 10px;
+    transform: translateY(15px);">Log Out</a></li>
+    {% endif %}
+    
+  </ul>
+
+  <!-- Login Button -->
+  <a href="{{ url_for('auth.sign_in_up') }}" class="login-button"><i class="bx bxs-user-circle"></i></a>
+  
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  
+</nav>
+
+<!-- HOME -->
+<section id="home" class="home">
+  <div class="home-right">
+    <img src="{{ url_for('static', filename='asset/profile-pic2.jpg') }}" class="profile-img" alt="Jabir Hossain">
+  </div>
+
+  <div class="home-left">
+    <h2>Hello! Myself,</h2>
+    <h1 class="colored-name">Jabir Hossain</h1>
+    <h2>I’m a <span class="colored-text">Student</span> of BPSC</h2>
+
+    <p>
+      Passionate about Python projects, web development, and automation.
+      Currently studying Class 10 (Science), ranked among top merit students
+      at BEPZA Public School and College. Based in Bangladesh.
+    </p>
+
+    <a href="#about" class="about-btn">About Me</a>
+
+    <div class="social-icons">
+      <a href="mailto:jabirhossainshifat@gmail.com?subject=Hello%20Jabir&body=Hello!%20there...%20I%20would%20like%20to%20connect%20with%20you"><i class='bx bx-envelope'></i></a>
+      <a href="https://github.com/jabir2233"><i class='bx bxl-github'></i></a>
+      <a href="https://wa.me/8801930333250"><i class='bx bxl-whatsapp'></i></a>
+      <a href="https://www.facebook.com/share/1CKgYoEg5c/"><i class='bx bxl-facebook'></i></a>
+      <a href="https://www.instagram.com/__j_a_b_i_r___?igsh=cTZxaG52dnF5OTAy=="><i class='bx bxl-instagram'></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+  <div class="about-img">
+    <img src="{{ url_for('static', filename='asset/profile-pic.jpg') }}" alt="About image">
+  </div>
+
+  <div class="about-text">
+    <h2>About Me</h2>
+    <p>
+      I’m a science student in Class 10 with a strong passion for programming
+      and problem-solving. I enjoy building Python applications, web projects,
+      and experimenting with automation tools. I believe consistency and
+      curiosity are my biggest strengths.
+    </p>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="projects">
+  <h2>Projects</h2>
+
+  <div class="project-wrapper">
+    <div class="project-card">
+      <h3>Lemonoids Invasion™</h3>
+      <p>A Game Based On Asteroids. Play Shoot Upgrade and More. Completely Done in Scratch Coding Engine.</p>
+      <button href="#">View Project</button>
+    </div>
+
+    <div class="project-card">
+      <h3>Raycasting Game</h3>
+      <p>DOOM-style Python Game with Raycasting. Inspired by many YouTube Tutorials.
+      Sorry... This is Not Available For Now.
+      </p>
+    </div>
+
+    <div class="project-card">
+      <h3>AI Maze</h3>
+      <p>A Maze Game to Test Your Brain. Created in Scratch Engine. Every Maze is Unique. Solve and Try Now...</p>
+      <button onclick="window.open('https://jabir2233.github.io/AI_Maze/')">View Project</button>
+    </div>
+
+    
+    <div class="project-card">
+      <h3>Number Guessing Game</h3>
+      <p>A Game Done in Python. Guess The Computer Selected Number with Mathmatical Hints. Check Your IQ and Test It.</p>
+      <button>Not Available for Public</button>
+    </div>
+
+    <div class="project-card">
+      <h3>Automation Scripts</h3>
+      <p>An Educational Project where The Code Can Brute force and troes password upto 20k times per second. </p>
+      <button>Private Only(Restricted)</button>
+    </div>
+
+    <div class="project-card">
+      <h3>Flappy Box (Remastered)</h3>
+      <p>Introducing Flappy Box. A Remastered Game of Flappy Bird. Completely Done In Scratch. Try Now...</p>
+      <button onclick="window.open('https://jabir2233.github.io/Flappy_Box/')">View Project</button>
+    </div>
+    
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <h2>Contact</h2>
+  <p>Email: jabirhossainshifat@gmail.com</p>
+  <p>Location: Dhaka, Bangladesh, Asia</p>
+</section>
+
+<footer>
+  © 2026 Jabir Hossain Shifat. All Rights Reserved. <a href="#">Privacy Policy</a>
+</footer>
+
+  <!-- Script -->
+  <script src="{{ url_for('static', filename='home.js') }}"></script>
+</body>
+</html>
