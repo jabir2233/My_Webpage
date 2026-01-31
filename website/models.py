@@ -14,7 +14,7 @@ class PendingUser(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(20), nullable=False)
   email = db.Column(db.String(120), unique=True, nullable=False)
-  password = db.Column(db.String(60), nullable=False)
+  password = db.Column(db.String(255), nullable=False)
   otp = db.Column(db.String(6), nullable=False)
   otp_expiry = db.Column(db.DateTime, nullable=False)
 
@@ -24,5 +24,5 @@ class User(db.Model, UserMixin):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(20))
   email = db.Column(db.String(120), unique=True)
-  password = db.Column(db.String(60))
+  password = db.Column(db.String(255))
   notes = db.relationship('Note')

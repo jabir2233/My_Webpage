@@ -5,7 +5,7 @@ from . import db, oauth
 from flask_login import login_user, login_required, logout_user, current_user
 from website.utils.send_mail import send_email
 from website.utils.otp import generate_otp
-
+import threading
 import os
 
 auth = Blueprint('auth', __name__)
@@ -64,8 +64,13 @@ def sign_in_up():
                     'otp': otp
                 }
 
-                #Send OTP to user's email
-                send_email(email, otp)
+                #Send OTP to user's email in a separate thread
+                threading.Thread(
+                    target=send_email,
+                    args=(email, otp),
+                    daemon=True
+                ).start()
+                
                 flash('An OTP has been sent to your email. Please verify to complete registration.', category='success')
 
                 return redirect(url_for('auth.verify_email'))

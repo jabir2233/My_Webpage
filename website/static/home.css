@@ -313,6 +313,8 @@ nav{
 .nav-links.active li:nth-child(4){ animation-delay: 0.42s; }
 .nav-links.active li:nth-child(5){ animation-delay: 0.52s; }
 
+  .login-button{margin-right: -10px;}
+
 .hamburger{
   display: flex;
   flex-direction: column;
@@ -338,6 +340,7 @@ nav{
 
   /*Contact section*/
   .contact h2{font-size:35px;}
+  .contact p{font-size:16px; text-align:left;}
 
   /*Projects section*/
   .projects h2{font-size:35px;}
