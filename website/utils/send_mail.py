@@ -4,6 +4,10 @@ from email.mime.multipart import MIMEMultipart
 from website import GMAIL_USER, GMAIL_PASS
 
 def send_email(to_email, otp):
+  #Debuging Only for Render
+  print("GMAIL_USER:", GMAIL_USER)
+  print("GMAIL_PASS:", bool(GMAIL_PASS))
+
   msg = MIMEMultipart()
   msg['From'] = GMAIL_USER
   msg['To'] = to_email
