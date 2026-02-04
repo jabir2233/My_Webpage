@@ -10,7 +10,16 @@
 </head>
 
 <body>
+
+    <!--Nav Bar(specific)-->
+    <nav>
+        <div class="logo">Jabir2233</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('views.home') }}">Home</a></li>
+        </ul>
+    </nav>
     
+    <!-- Flash Message -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
@@ -85,8 +94,6 @@
             </div>
         </div>
     </div>
-
-    <!-- An Optionfor user to Return Home -->   
 
     <script src="{{ url_for('static', filename='sign_in_up.js') }}"></script>
 

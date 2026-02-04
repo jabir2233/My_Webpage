@@ -20,9 +20,12 @@ oauthlib==2.1.0
 packaging==23.2
 psycopg2-binary==2.9.11
 pycparser==3.0
+python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 requests==2.32.3
 requests-oauthlib==1.1.0
+sib-api-v3-sdk==7.6.0
+six==1.17.0
 SQLAlchemy==2.0.30
 typing_extensions==4.12.2
 urllib3==2.2.2

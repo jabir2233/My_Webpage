@@ -29,3 +29,5 @@ instance/
 # Ignore zip, temp or build folders
 *.zip
 temp/
+version/
+

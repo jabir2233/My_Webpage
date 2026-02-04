@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, render_template
+from flask import current_app
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, oauth
@@ -64,14 +65,23 @@ def sign_in_up():
                     'otp': otp
                 }
 
-                #Send OTP to user's email in a separate thread
+                # Send OTP Email in background with Threading
                 threading.Thread(
-                    target=send_email,
-                    args=(email, otp),
-                    daemon=True
-                ).start()
+    target=send_email,
+    args=(
+        current_app._get_current_object(),  # <-- pass real app
+        email,
+        "OTP Verification for Jabir2233",
+        "email/otp.html"
+    ),
+    kwargs={
+        "username": username,
+        "otp_code": otp
+    },
+    daemon=True
+).start()
                 
-                flash('An OTP has been sent to your email. Please verify to complete registration.', category='success')
+                flash('An OTP has been sent to your email. Please verify to complete your registration.', category='success')
 
                 return redirect(url_for('auth.verify_email'))
                 
@@ -153,6 +163,7 @@ def logout():
         if action == 'logout':
             logout_user()
             flash('Logged out successfully.', category='success')
+            return redirect(url_for('views.home'))
         else:
             flash('Still logged in.', category='info')
             return redirect(url_for('views.home'))

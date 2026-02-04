@@ -13,6 +13,9 @@ oauth = OAuth()
 DB_NAME = "database.db"
 GMAIL_USER = os.environ.get('GMAIL_USER')
 GMAIL_PASS = os.environ.get('GMAIL_PASS')
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+BREVO_API_KEY = os.environ.get('BREVO_API_KEY')
 
 def create_app():
     app = Flask(__name__)

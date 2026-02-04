@@ -7,6 +7,14 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+
+:root{
+  --bg-color: linear-gradient(to right, #e2e2e2, #c9d6ff);
+  --main-color: #312da8;
+  --snd-color: #ff6f61;
+  --text-color: #ffffff;
+}
+
 body{
     background-color: #c9d6ff;
     background: linear-gradient(to right, #e2e2e2, #c9d6ff);
@@ -14,13 +22,49 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100vh;
-    padding: 10px;
+    padding: 0px;
+}
+
+/* ---------Nav Bar--------- */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 50px;
+  background:var(--main-color);
+  position:sticky;
+  top:0;
+  z-index: 9999;
+  width: 100%;
+}
+
+.logo{color:white;
+      font-size:27px;
+      font-weight:bold;
+      transform:translateX(-2px);
+}
+
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:25px;
+}
+
+.nav-links a{
+  color:white;
+  text-decoration:none;
+  font-size:22.5px;
+  font-weight:700;
+}
+
+.nav-links a:hover{
+  color:var(--snd-color);
 }
 
 /* ------------------ MAIN CONTAINER ------------------ */
 
 .container{
+    margin-top: 30px;
     background-color: #fff;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
@@ -261,8 +305,19 @@ body{
     transition: all 0.3s ease;
 }
 
+
+
 /* MOBILE: vertical (up/down) toggle using the same .container.active class */
 @media (max-width: 400px){
+
+  nav{
+  padding: 10px 25px;
+  }
+
+  .nav-links a{
+    font-size: 18px;
+  }
+
   .container{
     min-height: 400px;
     height: auto;
@@ -350,7 +405,7 @@ body{
   .google-btn span{
     margin-top: 10px;
     margin-right: 5px;
-
+  }
   /*.forgot-password{
       font-size: .8rem;
       margin-right: 0px;
