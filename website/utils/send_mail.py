@@ -10,6 +10,7 @@ def send_email(app, to_email, subject, template_name, **context):
         # give thread the Flask app
         with app.app_context():
             html_content = render_template(template_name, **context)
+            print(f"Mail[HTML_CONTENT]->\n{html_content}")
 
         configuration = sib_api_v3_sdk.Configuration()
         configuration.api_key['api-key'] = BREVO_API_KEY
