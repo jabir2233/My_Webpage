@@ -2,9 +2,9 @@
 Personal portfolio website built with Flask (Python backend) that also includes a complete authentication system for users.
 Deployed in production with Render + PostgreSQL + Brevo Email API.
 
-🔗 Live Site:__ https://jabir2233.onrender.com ↗️__
+🔗 Live Site: __ https://jabir2233.onrender.com ↗️__
 
-##✨ Features
+## ✨ Features
 • Portfolio website
 • User Sign Up / Sign In
 • Secure password hashing (one-way encryption)
@@ -15,7 +15,7 @@ Deployed in production with Render + PostgreSQL + Brevo Email API.
 • PostgreSQL database (Render Cloud)
 • Production deployment ready
 
-##🛠 Tech Stack
+## 🛠 Tech Stack
 Backend → Flask, SQLAlchemy
 Frontend → HTML, CSS, JavaScript
 Auth → Flask-Login, Google OAuth
@@ -23,7 +23,7 @@ Email → Brevo (SMTP/API)
 Database → PostgreSQL (Render)
 Hosting → Render
 
-##📂 Project Structure
+## 📂 Project Structure
 
 main.py
 
@@ -32,21 +32,21 @@ instance/
 
 website/
  ├─ __init__.py         → App factory (create_app)
- ├─ auth.py              → Authentication routes
- ├─ views.py            → General routes
- ├─ models.py         → Database models
- ├─ static/                → CSS, JS, images
+ ├─ auth.py→ Authentication routes
+ ├─ views.py     → General routes
+ ├─ models.py   → Database models
+ ├─ static/     → CSS, JS, images
  │   ├ *.css
  │   └─ *.js
  ├─ templates/
  │   ├─ email/
- │   │   └─ otp.html→ Email templates
+ │   │   └─ otp.html
  │   └─ *.html
- └─ utils/                  → Utilization Programs
+ └─ utils/ → Utilization Programs
        ├─ otp.py
        └─ send_mail.py
 
-##🔑 Environment Variables
+## 🔑 Environment Variables
 
 SESSION_SECRET
 DATABASE_URL
@@ -59,7 +59,7 @@ GMAIL_PASS
 
 BREVO_API_KEY
 
-##🌐 Routes
+## 🌐 Routes
 General
    /                              → Home (Portfolio)
    /sign_in_up           → Login & Register
@@ -72,7 +72,7 @@ Dev (optional)
    /clear_database_xxx
    /view_database_xxx
 
-##▶ Run Locally
+## ▶ Run Locally
 Install dependencies:
     pip install -r requirements.txt
 Run:
@@ -80,7 +80,7 @@ Run:
   or,
     gunicorn main:app
 
-##📧 Email System
+## 📧 Email System
 Provider → Brevo
 Free Tier → 300 emails/month
 Templates:
@@ -88,18 +88,18 @@ Templates:
 Logic:
    website/utils/send_mail.py
 
-##💾 Backup & Versioning
+## 💾 Backup & Versioning
 Create clean zip:
    zip -r version/v1.0.zip main.py website requirements.txt README.md
 
-##🗃 Git Commands
+## 🗃 Git Commands
 git status
 git add .
 git commit -m "message"
 git push origin master
 
-##👤 Author
+## 👤 Author
 Jabir Hossain
 Student Developer | Flask & Python Enthusiast
 
-#####©All The Copyrights are Reserved©
+##### ©All The Copyrights are Reserved©
