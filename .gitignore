@@ -31,3 +31,5 @@ instance/
 temp/
 version/
 
+# Dev Files
+requirements-dev.txt

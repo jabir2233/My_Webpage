@@ -15,7 +15,8 @@ class PendingUser(db.Model):
   username = db.Column(db.String(20), nullable=False)
   email = db.Column(db.String(120), unique=True, nullable=False)
   password = db.Column(db.String(255), nullable=False)
-  otp = db.Column(db.String(6), nullable=False)
+  #otp = db.Column(db.String(6), nullable=False)
+  hashed_otp = db.Column(db.String(255), nullable=False)
   otp_expiry = db.Column(db.DateTime, nullable=False)
 
 

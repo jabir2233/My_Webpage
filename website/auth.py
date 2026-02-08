@@ -1,124 +1,182 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, render_template
 from flask import current_app
-from .models import User
+from .models import User, PendingUser
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, oauth
 from flask_login import login_user, login_required, logout_user, current_user
 from website.utils.send_mail import send_email
-from website.utils.otp import generate_otp
+from website.utils.otp import generate_otp, verify_otp, hash_otp
+from datetime import datetime, timedelta
 import threading
 import os
 
 auth = Blueprint('auth', __name__)
 
-def create_user(username, email, password):
-    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-    new_user = User(username=username, email=email, password=hashed_password)
+# ==============================
+# Create real user
+# ==============================
+def create_user(username, email, password, already_hashed=False):
+    if not already_hashed:
+        password = generate_password_hash(password, method='pbkdf2:sha256')
+
+    new_user = User(
+        username=username,
+        email=email,
+        password=password
+    )
+
     db.session.add(new_user)
     db.session.commit()
     return new_user
 
 
+# ==============================
+# Create pending user
+# ==============================
+def create_pending_user(username, email, password, otp):
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+    hashed_otp = generate_password_hash(otp, method='pbkdf2:sha256')
+
+    new_pending_user = PendingUser(
+        username=username,
+        email=email,
+        password=hashed_password,
+        hashed_otp=hashed_otp,
+        otp_expiry=datetime.now() + timedelta(minutes=5)
+    )
+
+    db.session.add(new_pending_user)
+    db.session.commit()
+    return new_pending_user
+
+
+# ==============================
+# Sign in / Sign up route
+# ==============================
 @auth.route('/sign_in_up', methods=['GET', 'POST'])
 def sign_in_up():
-    # Redirect if already logged in
+
     if current_user.is_authenticated:
         return redirect(url_for('views.home'))
 
-     # Handle form submission
     if request.method == 'POST':
+
         form_type = request.form.get('form_type')
         username = request.form.get('Username', '').strip()
         email = request.form.get('Email', '').strip()
         password = request.form.get('Password', '').strip()
         confirm_password = request.form.get('CPassword', '').strip()
 
+        # ---------------- LOGIN ----------------
         if form_type == 'login':
+
             if not email or not password:
-                flash('Email and password are required.', category='error')
+                flash('Email and password are required.', 'error')
                 return redirect(url_for('auth.sign_in_up'))
 
             user = User.query.filter_by(email=email).first()
+
             if user and check_password_hash(user.password, password):
                 login_user(user, remember=True)
-                flash('Logged in successfully.', category='success')
                 return redirect(url_for('views.home'))
-            flash('Invalid email or password.', category='error')
 
+            flash('Invalid email or password.', 'error')
+
+
+        # ---------------- SIGNUP ----------------
         elif form_type == 'signup':
+
             if not username or not email or not password or not confirm_password:
-                flash('All fields are required to sign up.', category='error')
+                flash('All fields are required.', 'error')
+
             elif User.query.filter_by(email=email).first():
-                flash('Email already exists.', category='error')
+                flash('Email already exists.', 'error')
+
             elif len(username) < 3:
-                flash('Username must be at least 3 characters.', category='error')
+                flash('Username must be at least 3 characters.', 'error')
+
             elif password != confirm_password:
-                flash('Passwords do not match.', category='error')
+                flash('Passwords do not match.', 'error')
+
             else:
-                #Generate OTP
                 otp = generate_otp()
-                #store form data and email temporarily
-                session['pending_user'] = {
-                    'username': username,
-                    'email': email,
-                    'password': password,
-                    'otp': otp
-                }
 
-                # Send OTP Email in background with Threading
+                create_pending_user(username, email, password, otp)
+
+                # store only email in session
+                session['pending_users_email'] = email
+
                 threading.Thread(
-    target=send_email,
-    args=(
-        current_app._get_current_object(),  # <-- pass real app
-        email,
-        "OTP Verification for Jabir2233",
-        "email/otp.html"
-    ),
-    kwargs={
-        "username": username,
-        "otp_code": otp
-    },
-    daemon=True
-).start()
-                
-                flash('An OTP has been sent to your email. Please verify to complete your registration.', category='success')
+                    target=send_email,
+                    args=(
+                        current_app._get_current_object(),
+                        email,
+                        "OTP Verification for Jabir2233",
+                        "email/otp.html"
+                    ),
+                    kwargs={
+                        "username": username,
+                        "otp_code": otp
+                    },
+                    daemon=True
+                ).start()
 
+                flash('OTP sent to your email.', 'success')
                 return redirect(url_for('auth.verify_email'))
-                
 
     return render_template('sign_in_up.html')
 
+
+# ==============================
+# Verify Email route
+# ==============================
 @auth.route('/verify_email', methods=['GET', 'POST'])
 def verify_email():
-    pending = session.get('pending_user')
 
-    if not pending:
-        flash("No verification in progress.", "error")
+    email = session.get('pending_users_email')
+    if not email:
         return redirect(url_for('auth.sign_in_up'))
 
+    pending = PendingUser.query.filter_by(email=email).first()
+    if not pending:
+        session.pop('pending_users_email', None)
+        return redirect(url_for('auth.sign_in_up'))
+
+    # ---------- OTP Expiry check ----------
+    if datetime.now() > pending.otp_expiry:
+        db.session.delete(pending)
+        db.session.commit()
+        session.pop('pending_users_email', None)
+        flash("OTP expired. Please sign up again.", "error")
+        return redirect(url_for('auth.sign_in_up'))
+
+    # ---------- Verify ----------
     if request.method == 'POST':
-        user_otp = request.form.get('otp')
 
-        if user_otp == pending['otp']:
+        user_otp = request.form.get('otp', '').strip()
 
-            # Create user now
+        if verify_otp(pending.hashed_otp, user_otp):
+
             new_user = create_user(
-                pending['username'],
-                pending['email'],
-                pending['password']
+                pending.username,
+                pending.email,
+                pending.password,
+                already_hashed=True
             )
 
-            session.pop('pending_user')
+            db.session.delete(pending)
+            db.session.commit()
+
+            session.pop('pending_users_email', None)
 
             login_user(new_user, remember=True)
-            flash("Your email has been verified!", "success")
+            flash("Email verified successfully!", "success")
+
             return redirect(url_for('views.home'))
 
-        else:
-            flash("Incorrect OTP. Try again.", "error")
+        flash("Incorrect OTP.", "error")
 
-    return render_template('verify.html', email=pending['email'])
-
+    return render_template('verify.html', email=pending.email)
 
 @auth.route('/google_login')
 def google_login():
