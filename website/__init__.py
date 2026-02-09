@@ -19,12 +19,32 @@ BREVO_API_KEY = os.environ.get('BREVO_API_KEY')
 
 def create_app():
     app = Flask(__name__)
+
+    # Secret key for sessions
     app.config['SECRET_KEY'] = os.environ.get('SESSION_SECRET', 'secret key')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f'sqlite:///{DB_NAME}')
+
+    # Database URL
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+        'DATABASE_URL',
+        f'sqlite:///{DB_NAME}'
+    )
+
+    # Fix old postgres scheme if present
     if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
-        app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace("postgres://", "postgresql://", 1)
+        app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace(
+            "postgres://", "postgresql://", 1
+        )
+
+    # Engine options to prevent SSL & connection errors on Render
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        "pool_pre_ping": True,      # reconnect dead connections
+        "pool_recycle": 280         # refresh before Render closes idle connections
+    }
+
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['PREFERRED_URL_SCHEME'] = 'https'
 
+    # Initialize database
     db.init_app(app)
 
     # Initialize OAuth
