@@ -33,3 +33,5 @@ version/
 
 # Dev Files
 requirements-dev.txt
+ping_render.py
+ping.log
