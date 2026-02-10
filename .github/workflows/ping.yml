@@ -3,7 +3,7 @@ name: Keep Render Site Awake
 on:
   schedule:
     # Every 15 minutes
-    - cron: '*/15 * * * *'
+    - cron: '*/14 * * * *'
   workflow_dispatch: # allows manual trigger
 
 jobs:
