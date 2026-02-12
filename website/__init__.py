@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from authlib.integrations.flask_client import OAuth
@@ -11,6 +11,7 @@ load_dotenv(dotenv_path='instance/.env')
 db = SQLAlchemy()
 oauth = OAuth()
 DB_NAME = "database.db"
+ADMIN_KEY = os.environ.get('SECRET_ADMIN_KEY')
 GMAIL_USER = os.environ.get('GMAIL_USER')
 GMAIL_PASS = os.environ.get('GMAIL_PASS')
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
@@ -72,12 +73,26 @@ def create_app():
 
     @app.route('/clear_database_123')
     def clear_database():
+        #Check For Security
+        key = request.args.get("key")
+
+        if key != ADMIN_KEY:
+            print("Unknown Access Detected!")
+            abort(403)
+            
         db.drop_all()
         db.create_all()
         return 'Database cleared and tables recreated!'
 
     @app.route('/view_database_123')
     def view_database():
+        #Check For Security
+        key = request.args.get("key")
+
+        if key != ADMIN_KEY:
+            print("Unknown Access Detected!")
+            abort(403)
+        
         users = User.query.all()
         notes = Note.query.all()
 
