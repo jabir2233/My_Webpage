@@ -17,10 +17,20 @@ GMAIL_PASS = os.environ.get('GMAIL_PASS')
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
 BREVO_API_KEY = os.environ.get('BREVO_API_KEY')
+MAINTENANCE_MODE = False
 
 def create_app():
     app = Flask(__name__)
+    
+    #Maintenance Check
+    from flask import render_template
+    MAINTENANCE_MODE = True
 
+    @app.before_request
+    def maintenance():
+        if MAINTENANCE_MODE and request.path != "/ping":
+            return render_template("maintenance.html"), 503
+    
     # Secret key for sessions
     app.config['SECRET_KEY'] = os.environ.get('SESSION_SECRET', 'secret key')
 
