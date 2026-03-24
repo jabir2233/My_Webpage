@@ -35,10 +35,10 @@ def create_app():
     app.config['SECRET_KEY'] = os.environ.get('SESSION_SECRET', 'secret key')
 
     # Database URL
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-        'DATABASE_URL',
-        f'sqlite:///{DB_NAME}'
-    )
+    if MAINTENANCE_MODE:
+        app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DB_NAME}"
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
     # Fix old postgres scheme if present
     if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
