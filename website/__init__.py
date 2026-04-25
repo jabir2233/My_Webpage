@@ -29,7 +29,7 @@ def create_app():
     @app.before_request
     def maintenance():
         if MAINTENANCE_MODE and request.path != "/ping":
-            return render_template("maintenance.html"), 503
+            return render_template("home.html"), 503
     
     # Secret key for sessions
     app.config['SECRET_KEY'] = os.environ.get('SESSION_SECRET', 'secret key')
