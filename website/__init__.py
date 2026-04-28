@@ -24,7 +24,7 @@ def create_app():
     
     #Maintenance Check
     from flask import render_template
-    MAINTENANCE_MODE = True
+    #MAINTENANCE_MODE = True
 
     @app.before_request
     def maintenance():
